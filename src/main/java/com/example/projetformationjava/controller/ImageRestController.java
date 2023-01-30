@@ -3,6 +3,7 @@ package com.example.projetformationjava.controller;
 import com.example.projetformationjava.model.bean.CategoryBean;
 import com.example.projetformationjava.model.bean.ImageBean;
 import com.example.projetformationjava.model.service.ImageService;
+import com.example.projetformationjava.utils.FileUploadUtil;
 import org.apache.coyote.Response;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
@@ -19,11 +20,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin()
+@CrossOrigin
 @RequestMapping("/image")
 public class ImageRestController {
 
@@ -46,26 +48,28 @@ public class ImageRestController {
         // --------------
         List<CategoryBean> listeCategory = ImageService.getTopCategory();
         // --------------
-        System.out.println(listeCategory);
         return listeCategory;
     }
 
     // Permet de recuperer toutes les categories contenant 4 images chacune (pour thumnail)
     @GetMapping("/categorylist")
     public List<CategoryBean> getCategoryList(){
-        List<CategoryBean> listeCategory = new ArrayList<>();
-        // --------------
+        System.out.println("categorylist");
 
+        // List<CategoryBean> listeCategory = new ArrayList<>();
+        // --------------
+        List<CategoryBean> listeCategory = ImageService.getCategoryList();
         // --------------
         return listeCategory;
     }
 
     // Permet de recuperer une categorie avec toutes ces images
     @GetMapping("/category")
-    public CategoryBean getCategoryList(int id){
-        CategoryBean category = new CategoryBean();
+    public CategoryBean getCategory(int id){
+        System.out.println("category");
+//        CategoryBean category = new CategoryBean();
         // --------------
-
+        CategoryBean category = ImageService.getCategory();
         // --------------
         return category;
     }
@@ -73,44 +77,43 @@ public class ImageRestController {
     // Permet de recuperer  les images utilisateurs
     @GetMapping("/feed")
     public List<ImageBean> getFeed(int id){
-        List<ImageBean> listImage = new ArrayList<>();
+        System.out.println("feed");
+//        List<ImageBean> listImage = new ArrayList<>();
         // --------------
-
+        List<ImageBean> liste = ImageService.getTopImage();
         // --------------
-        return listImage;
+        return liste;
     }
 
     // Permet de sauvegarder  une image
     @PostMapping("/save")
-    public void save(@RequestParam("file")MultipartFile file) throws IOException {
+    public void save(@RequestParam("file")MultipartFile file,
+                     @RequestParam("title")String title,
+                     @RequestParam("description")String description)
+            throws IOException {
+
         System.out.println("/save");
-        // --------------
-        // !!!  passer en FILE !!! si stockage en java
-        // --------------
 
         // Recupere le path ou stocker l'image
         String pathDirectory = new ClassPathResource("static/image/").getFile().getAbsolutePath();
-        System.out.println(pathDirectory);
 
         // Recupere l'extension
-        String fileName = file.getOriginalFilename();
-        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+        String fileOriginalName = file.getOriginalFilename();
+        String extension = fileOriginalName.substring(fileOriginalName.lastIndexOf(".") + 1);
+        String[] extensionAccepted = {"jpg"};
+        System.out.println(extension);
 
+        if(!Arrays.asList(extensionAccepted).contains(extension)){
+            System.out.println(extension);
+            throw new IOException("Could not save image file of type: " + fileOriginalName);
+        }
         // Creer une chaine de caractere unique
         UUID uuid = UUID.randomUUID();
 
         // Store image
-        Files.copy(file.getInputStream(), Paths.get(pathDirectory + File.separator + uuid  + "." + extension));
+        FileUploadUtil.saveFile(pathDirectory, uuid + "." + extension, file);
 
-//        BufferedImage image = ImageIO.read(new File(pathDirectory));
-//        System.out.println(image);
+
     }
-
-    // Permet d'afficher une image
-//    @GetMapping("get/{name}")
-//    public Response getImage(@PathVariable("name") String name) throws FileNotFoundException {
-//        final File dbImage = ResourceUtils.getFile("image/tree.png");
-//
-//    }
 
 }
