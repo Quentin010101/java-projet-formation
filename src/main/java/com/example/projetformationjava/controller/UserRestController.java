@@ -3,6 +3,7 @@ package com.example.projetformationjava.controller;
 import com.example.projetformationjava.model.bean.UserBean;
 import com.example.projetformationjava.model.service.UserService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @CrossOrigin()
@@ -21,8 +22,17 @@ public class UserRestController {
     }
 
     // Permet de mettre à jour les infos utilisateurs
-    @PostMapping("update")
+    @PostMapping("update/user")
     public static void updateUser(@RequestBody UserBean user){
+        System.out.println("updateuser");
+        //----------
+
+        //---------
+    }
+
+    @PostMapping("update/avatar")
+    public static void updateAvatar(@RequestParam("file") MultipartFile file, @RequestParam("id")int id){
+        System.out.println("updateavatar");
         //----------
 
         //---------

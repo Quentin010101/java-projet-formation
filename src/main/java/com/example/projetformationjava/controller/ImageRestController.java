@@ -100,7 +100,7 @@ public class ImageRestController {
         // Recupere l'extension
         String fileOriginalName = file.getOriginalFilename();
         String extension = fileOriginalName.substring(fileOriginalName.lastIndexOf(".") + 1);
-        String[] extensionAccepted = {"jpg"};
+        String[] extensionAccepted = {"jpg", "png", "jpeg", "svg"};
         System.out.println(extension);
 
         if(!Arrays.asList(extensionAccepted).contains(extension)){

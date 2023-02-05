@@ -10,6 +10,7 @@ public class UserService {
         user.setEmail("qsd@gmail.com");
         user.setAvatarPath("http://localhost:8080/image/avatar/avatar.jpg");
         user.setName("Jeane");
+        user.setUserid(2);
 
         return user;
     }
