@@ -1,11 +1,24 @@
 package com.example.projetformationjava.model.bean;
 
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name="category")
 public class CategoryBean {
-    private int categoryid;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long categoryid;
     private String type;
-    private List<ImageBean> listeImage;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "pivot-category-image" ,
+            joinColumns = @JoinColumn(name="categoryid"),
+            inverseJoinColumns = @JoinColumn(name="imageid") )
+    private List<ImageBean> listeImage = new ArrayList<>();
 
     public List<ImageBean> getListeImage() {
         return listeImage;
@@ -15,9 +28,6 @@ public class CategoryBean {
         this.listeImage = listeImage;
     }
 
-    public int getCategoryid() {
-        return categoryid;
-    }
 
     public void setCategoryid(int categoryid) {
         this.categoryid = categoryid;

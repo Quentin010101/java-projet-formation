@@ -1,13 +1,37 @@
 package com.example.projetformationjava.model.bean;
 
+import com.example.projetformationjava.model.dto.UserDTO;
+import jakarta.persistence.*;
 
+import java.util.List;
+
+@Entity
+@Table(name="image")
 public class ImageBean {
 
-    private int imageid;
-    private int userid;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long imageid;
     private String imagePath;
     private String title;
     private String description;
+
+    @ManyToOne(fetch = FetchType.EAGER) // Eager valeur par default
+    @JoinColumn(name="userid", referencedColumnName = "userid")
+    private UserDTO user;
+
+    @OneToMany(fetch = FetchType.EAGER) // Eager valeur par default
+    @JoinColumn(name="imageid", referencedColumnName = "imageid")
+    private List<PivotImageUser> like;
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+
+    public int getLike(){
+        return like.size();
+    }
 
     public ImageBean() {
     }
@@ -17,21 +41,8 @@ public class ImageBean {
         this.title = title;
         this.description = description;
     }
-
-    public int getImageid() {
-        return imageid;
-    }
-
     public void setImageid(int imageid) {
         this.imageid = imageid;
-    }
-
-    public int getUserid() {
-        return userid;
-    }
-
-    public void setUserid(int userid) {
-        this.userid = userid;
     }
 
     public String getImagePath() {
@@ -57,4 +68,5 @@ public class ImageBean {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

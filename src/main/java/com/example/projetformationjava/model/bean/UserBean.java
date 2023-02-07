@@ -1,8 +1,15 @@
 package com.example.projetformationjava.model.bean;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "user")
 public class UserBean {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userid;
-    private String pseudo;
+    protected String pseudo;
     private String password;
     private String name;
     private String surname;
