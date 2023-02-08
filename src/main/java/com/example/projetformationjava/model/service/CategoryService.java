@@ -20,4 +20,6 @@ public class CategoryService {
     public List<CategoryBean> getCategoryList(){
         return categoryRep.findAll();
     }
+
+    public List<CategoryBean> getTopCategory(){ return categoryRep.topCategory(); }
 }

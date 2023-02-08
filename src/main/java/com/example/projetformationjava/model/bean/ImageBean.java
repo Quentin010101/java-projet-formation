@@ -20,8 +20,9 @@ public class ImageBean {
     @JoinColumn(name="userid", referencedColumnName = "userid")
     private UserDTO user;
 
-    @OneToMany(fetch = FetchType.EAGER) // Eager valeur par default
-    @JoinColumn(name="imageid", referencedColumnName = "imageid")
+//    @OneToMany(fetch = FetchType.EAGER) // Eager valeur par default
+//    @JoinColumn(name="imageid", referencedColumnName = "imageid")
+    @OneToMany(mappedBy = "imageid",fetch = FetchType.EAGER)
     private List<PivotImageUser> like;
 
     public UserDTO getUser() {

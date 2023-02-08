@@ -15,7 +15,7 @@ public class CategoryBean {
     private String type;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "pivot-category-image" ,
+    @JoinTable(name = "pivot_category_image" ,
             joinColumns = @JoinColumn(name="categoryid"),
             inverseJoinColumns = @JoinColumn(name="imageid") )
     private List<ImageBean> listeImage = new ArrayList<>();

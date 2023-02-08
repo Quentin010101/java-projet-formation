@@ -32,7 +32,7 @@ public class ImageRestController {
     public List<ImageBean> getTopImage() throws IOException {
         System.out.println("topImage");
 
-        List<ImageBean> liste = new ArrayList<>();
+        List<ImageBean> liste = imageService.getTopImage();
         return liste;
     }
 
@@ -40,10 +40,8 @@ public class ImageRestController {
     @GetMapping("/topcategory")
     public List<CategoryBean> getTopCategory(){
         System.out.println("topCategory");
-//        List<CategoryBean> listeCategory = new ArrayList<>();
-        // --------------
-        List<CategoryBean> listeCategory = new ArrayList<>();
-        // --------------
+
+        List<CategoryBean> listeCategory = categoryService.getTopCategory();
         return listeCategory;
     }
 
