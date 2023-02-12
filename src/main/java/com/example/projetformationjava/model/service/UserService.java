@@ -1,16 +1,19 @@
 package com.example.projetformationjava.model.service;
 
 import com.example.projetformationjava.model.bean.UserBean;
+import com.example.projetformationjava.model.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserService {
 
-    public static UserBean getUser(){
-        UserBean user = new UserBean();
-        user.setCountry("France");
-        user.setEmail("qsd@gmail.com");
-        user.setAvatarPath("http://localhost:8080/image/avatar/avatar.jpg");
-        user.setName("Jeane");
-        user.setUserid(2);
+    @Autowired
+    private  UserRepository userRepository;
+
+    public UserBean getUser(String id){
+
+        UserBean user = userRepository.findBySessionId(id);
 
         return user;
     }

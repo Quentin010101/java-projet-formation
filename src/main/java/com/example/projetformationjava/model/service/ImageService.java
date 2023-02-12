@@ -1,6 +1,7 @@
 package com.example.projetformationjava.model.service;
 
 import com.example.projetformationjava.model.bean.ImageBean;
+import com.example.projetformationjava.model.bean.UserBean;
 import com.example.projetformationjava.model.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,11 @@ public class ImageService {
 
     // Permet de recuperer les 9 meilleurs images de la semaine
     public List<ImageBean> getTopImage(){
-            return imageRepository.topImage();
+        return imageRepository.topImage();
+    }
+
+    // Permet de recuperer les images d'un utilisateur
+    public List<ImageBean> getFeed(UserBean user){
+        return imageRepository.getImageBeanByUser(user);
     }
 }

@@ -8,8 +8,9 @@ public class UserBean {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userid;
+    private long userid;
     protected String pseudo;
+    protected String sessionId;
     private String password;
     private String name;
     private String surname;
@@ -17,6 +18,14 @@ public class UserBean {
     private String role;
     private String avatarPath;
     private String country;
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
     public String getPseudo() {
         return pseudo;
@@ -74,7 +83,7 @@ public class UserBean {
         this.country = country;
     }
 
-    public int getUserid() {
+    public long getUserid() {
         return userid;
     }
 

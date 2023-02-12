@@ -2,6 +2,7 @@ package com.example.projetformationjava.controller;
 
 import com.example.projetformationjava.model.bean.UserBean;
 import com.example.projetformationjava.model.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,14 +11,16 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/user")
 public class UserRestController {
 
+    @Autowired
+    private UserService userService;
+
     // Permet de voir les infos utilisateurs
     @GetMapping("show")
-    public static UserBean getUser(int id){
+    public UserBean getUser(String id){
         System.out.println("getUser");
-//        UserBean user = new UserBean();
-        //----------
-        UserBean user = UserService.getUser();
-        //---------
+
+        UserBean user = userService.getUser(id);
+
         return user;
     }
 

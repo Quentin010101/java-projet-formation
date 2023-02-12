@@ -2,9 +2,12 @@ package com.example.projetformationjava.controller;
 
 import com.example.projetformationjava.model.bean.CategoryBean;
 import com.example.projetformationjava.model.bean.ImageBean;
+import com.example.projetformationjava.model.bean.UserBean;
 import com.example.projetformationjava.model.service.CategoryService;
 import com.example.projetformationjava.model.service.ImageService;
+import com.example.projetformationjava.model.service.UserService;
 import com.example.projetformationjava.utils.FileUploadUtil;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +29,8 @@ public class ImageRestController {
     private ImageService imageService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private UserService userService;
 
     // Permet de recuperer les 9 meilleurs images de la semaine
     @GetMapping("/topimage")
@@ -68,12 +73,13 @@ public class ImageRestController {
 
     // Permet de recuperer  les images utilisateurs
     @GetMapping("/feed")
-    public List<ImageBean> getFeed(int id){
+    public List<ImageBean> getFeed(HttpSession httpSession, String id){
         System.out.println("feed");
-//        List<ImageBean> listImage = new ArrayList<>();
-        // --------------
-        List<ImageBean> liste = new ArrayList<>();
-        // --------------
+
+        UserBean user = userService.getUser(id);
+
+        List<ImageBean> liste = imageService.getFeed(user);
+
         return liste;
     }
 
