@@ -17,4 +17,16 @@ public class UserService {
 
         return user;
     }
+
+    public void saveUser(UserBean user){
+        userRepository.save(user);
+    }
+
+    public UserBean getUserByPseudo(String pseudo){
+        return userRepository.findByPseudo(pseudo);
+    }
+
+    public UserBean userPseudoExists(String pseudo){
+        return userRepository.existsByPseudo(pseudo);
+    }
 }

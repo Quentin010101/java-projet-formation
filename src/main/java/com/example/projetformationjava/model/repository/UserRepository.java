@@ -8,4 +8,8 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<UserBean, Long> {
     UserBean findBySessionId(String sessionId);
 
+    UserBean findByPseudo(String pseudo);
+
+    UserBean existsByPseudo(String pseudo);
+
 }

@@ -12,6 +12,11 @@ public class UserBean {
     protected String pseudo;
     protected String sessionId;
     private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
     private String name;
     private String surname;
     private String email;

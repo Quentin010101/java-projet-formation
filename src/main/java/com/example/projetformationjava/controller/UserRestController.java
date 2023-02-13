@@ -2,6 +2,7 @@ package com.example.projetformationjava.controller;
 
 import com.example.projetformationjava.model.bean.UserBean;
 import com.example.projetformationjava.model.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,10 +17,10 @@ public class UserRestController {
 
     // Permet de voir les infos utilisateurs
     @GetMapping("show")
-    public UserBean getUser(String id){
+    public UserBean getUser(HttpSession idSession){
         System.out.println("getUser");
 
-        UserBean user = userService.getUser(id);
+        UserBean user = userService.getUser(idSession.getId());
 
         return user;
     }
