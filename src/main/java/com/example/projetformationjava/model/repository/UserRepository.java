@@ -1,6 +1,6 @@
 package com.example.projetformationjava.model.repository;
 
-import com.example.projetformationjava.model.bean.UserBean;
+import com.example.projetformationjava.model.bean.dao.UserBean;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +10,6 @@ public interface UserRepository extends JpaRepository<UserBean, Long> {
 
     UserBean findByPseudo(String pseudo);
 
-    UserBean existsByPseudo(String pseudo);
+    boolean existsByPseudo(String pseudo);
 
 }

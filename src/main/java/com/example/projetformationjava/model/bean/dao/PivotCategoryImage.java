@@ -1,4 +1,4 @@
-package com.example.projetformationjava.model.bean;
+package com.example.projetformationjava.model.bean.dao;
 
 import jakarta.persistence.*;
 

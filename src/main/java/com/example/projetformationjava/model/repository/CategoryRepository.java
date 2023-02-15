@@ -1,6 +1,6 @@
 package com.example.projetformationjava.model.repository;
 
-import com.example.projetformationjava.model.bean.CategoryBean;
+import com.example.projetformationjava.model.bean.dao.CategoryBean;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

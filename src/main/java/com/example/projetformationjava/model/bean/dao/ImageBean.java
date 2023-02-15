@@ -1,6 +1,5 @@
-package com.example.projetformationjava.model.bean;
+package com.example.projetformationjava.model.bean.dao;
 
-import com.example.projetformationjava.model.dto.UserDTO;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -29,6 +28,9 @@ public class ImageBean {
         return user;
     }
 
+    public void setUser(UserBean user) {
+        this.user = user;
+    }
 
     public int getLike(){
         return like.size();

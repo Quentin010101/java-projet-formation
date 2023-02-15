@@ -1,14 +1,18 @@
 package com.example.projetformationjava.controller;
 
-import com.example.projetformationjava.model.bean.AuthBean;
-import com.example.projetformationjava.model.bean.UserBean;
+import com.example.projetformationjava.model.bean.dao.AuthBean;
+import com.example.projetformationjava.model.bean.dao.UserBean;
+import com.example.projetformationjava.model.bean.dto.MessageBean;
 import com.example.projetformationjava.model.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.Objects;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class AuthRestController {
 
     @Autowired
@@ -16,38 +20,53 @@ public class AuthRestController {
 
     // Permet de s’identifier
     @PostMapping("/login")
-    public UserBean login(@RequestBody AuthBean auth) throws Exception {
+    public MessageBean login(HttpSession httpSession, @RequestBody AuthBean auth){
+        System.out.println("login");
 
         try {
-            if (auth.getPseudo().trim() == null || auth.getPassword() == null) {
-                throw new Exception("Login credential required");
+            // Check if credential are null
+            if (auth.getPseudo().trim().length() == 0 ||
+                    auth.getPassword() == null)
+            {
+                throw new Exception("Login credential required.");
             }
 
+            // Check if user existe
             UserBean user = userService.getUserByPseudo(auth.getPseudo().trim());
-
             if (user == null) {
-                throw new Exception("Credential are not correct");
+                throw new Exception("User dosent exists.");
             }
 
-            if (auth.getPseudo() != auth.getPseudo().trim() || auth.getPassword() != user.getPassword()) {
-                throw new Exception("Credential are not correct");
+            // Check if credentials are correct
+            if (!Objects.equals(auth.getPseudo(), auth.getPseudo().trim()) ||
+                    !Objects.equals(auth.getPassword(), user.getPassword()))
+            {
+                throw new Exception("Credentials are not correct");
             }
 
-            return user;
+            httpSession.setMaxInactiveInterval(120);
+            user.setSessionId(httpSession.getId());
+            userService.saveUser(user);
+
+            return new MessageBean(true, "You're log in.", httpSession.getId());
 
         }catch(Exception e){
             e.printStackTrace();
-            return null;
+            return new MessageBean(false, e.getMessage());
         }
     }
 
     // Permet de s’enregistrer
     @PostMapping("/signin")
-    public void signin(@RequestBody AuthBean auth){
+    public MessageBean signin(@RequestBody AuthBean auth){
+        System.out.println("signin");
 
         try{
             // Check if credential are null
-            if(auth.getPseudo().trim() == null || auth.getPassword() == null || auth.getEmail() == null){
+            if(auth.getPseudo().trim().length() == 0 ||
+                    auth.getPassword().length() == 0 ||
+                    auth.getEmail().length() == 0)
+            {
                 throw new Exception("Register credential required");
             }
 
@@ -57,14 +76,36 @@ public class AuthRestController {
             }
 
             // Check if pseudo is unique
-            if(userService.userPseudoExists(auth.getPseudo().trim()) != null){
+            if(userService.userPseudoExists(auth.getPseudo().trim())){
                 throw new Exception("User already exist");
             }
 
+            UserBean user = new UserBean(auth.getPseudo().trim(),
+                                         auth.getPassword(),
+                                         auth.getEmail(),
+                                        "ROLE_USER",
+                                        new Date().getTime()
+            );
 
+            userService.saveUser(user);
+
+            return new MessageBean(true, "User has been saved");
 
         }catch (Exception e){
+            e.printStackTrace();
+            return new MessageBean(false, e.getMessage());
+        }
+    }
 
+    @GetMapping("logout")
+    public void logOut(HttpSession httpSession){
+        System.out.println("logout");
+
+        UserBean user = userService.getUserBySession(httpSession.getId());
+
+        if(user != null){
+            user.setSessionId("");
+            userService.saveUser(user);
         }
     }
 }

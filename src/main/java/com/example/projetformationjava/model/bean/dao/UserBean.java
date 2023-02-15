@@ -1,4 +1,4 @@
-package com.example.projetformationjava.model.bean;
+package com.example.projetformationjava.model.bean.dao;
 
 import jakarta.persistence.*;
 
@@ -9,20 +9,31 @@ public class UserBean {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userid;
-    protected String pseudo;
-    protected String sessionId;
+    private String pseudo;
+    private String sessionId;
     private String password;
-
-    public String getPassword() {
-        return password;
-    }
-
     private String name;
     private String surname;
     private String email;
     private String role;
     private String avatarPath;
     private String country;
+    private Long date;
+
+
+    public UserBean(String pseudo, String password, String email, String role, long date) {
+        this.pseudo = pseudo;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.date = date;
+    }
+    public UserBean(){
+
+    }
+    public String getPassword() {
+        return password;
+    }
 
     public String getSessionId() {
         return sessionId;
@@ -94,5 +105,30 @@ public class UserBean {
 
     public void setUserid(int userid) {
         this.userid = userid;
+    }
+
+    public void setDate(Long date) {
+        this.date = date;
+    }
+
+    public Long getDate() {
+        return date;
+    }
+
+    @Override
+    public String toString() {
+        return "UserBean{" +
+                "userid=" + userid +
+                ", pseudo='" + pseudo + '\'' +
+                ", sessionId='" + sessionId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                ", avatarPath='" + avatarPath + '\'' +
+                ", country='" + country + '\'' +
+                ", date=" + date +
+                '}';
     }
 }

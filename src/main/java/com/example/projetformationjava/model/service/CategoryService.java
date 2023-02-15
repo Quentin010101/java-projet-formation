@@ -1,6 +1,6 @@
 package com.example.projetformationjava.model.service;
 
-import com.example.projetformationjava.model.bean.CategoryBean;
+import com.example.projetformationjava.model.bean.dao.CategoryBean;
 import com.example.projetformationjava.model.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
