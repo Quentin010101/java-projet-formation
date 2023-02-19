@@ -24,6 +24,7 @@ public class ImageBean {
     @OneToMany(mappedBy = "imageid",fetch = FetchType.EAGER)
     private List<PivotImageUser> like;
 
+
     public UserBean getUser() {
         return user;
     }

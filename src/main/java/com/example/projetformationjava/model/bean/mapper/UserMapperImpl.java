@@ -15,7 +15,7 @@ public class UserMapperImpl implements UserMapper{
         if(dto.getPseudo() != null)  user.setPseudo( dto.getPseudo() );
         if(dto.getName() != null)  user.setName( dto.getName() );
         if(dto.getSurname() != null)  user.setSurname( dto.getSurname() );
-        if(dto.getAvatarPath() != null)  user.setSurname( dto.getAvatarPath() );
+        if(dto.getAvatarPath() != null)  user.setAvatarPath( dto.getAvatarPath() );
 
         return user;
     }

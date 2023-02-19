@@ -8,21 +8,20 @@ import com.example.projetformationjava.model.service.CategoryService;
 import com.example.projetformationjava.model.service.FileServiceImplementation;
 import com.example.projetformationjava.model.service.ImageService;
 import com.example.projetformationjava.model.service.UserService;
-import com.example.projetformationjava.utils.FileUploadUtil;
-import jakarta.servlet.http.HttpServletRequest;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
 
-import java.util.Arrays;
+
+import java.lang.reflect.Array;
 import java.util.List;
-import java.util.UUID;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
@@ -37,8 +36,6 @@ public class ImageRestController {
     @Autowired
     private FileServiceImplementation fileService;
 
-    @Value("${project.image}")
-    private String path;
 
     // Permet de recuperer les 9 meilleurs images de la semaine
     @GetMapping("/topimage")
@@ -64,6 +61,13 @@ public class ImageRestController {
         return categoryService.getCategoryList();
     }
 
+    @GetMapping("/categoryall")
+    public List<CategoryBean> getCategoryAll(){
+        System.out.println("categoryall");
+
+        return categoryService.getAllCategory();
+    }
+
     // Permet de recuperer une categorie avec toutes ces images
     @GetMapping("/category")
     public CategoryBean getCategory(String type){
@@ -83,43 +87,64 @@ public class ImageRestController {
     }
 
     // Permet de sauvegarder  une image
-    @PostMapping("/save")
-    public MessageBean save(HttpSession httpSession, @RequestParam("file")MultipartFile file,
-                            @RequestParam("title")String title,
-                            @RequestParam("description")String description)
+    @PostMapping("/savefile")
+    public String save(HttpSession httpSession, @RequestParam("file")MultipartFile file)
     {
-        System.out.println("/save");
+        System.out.println("/savefile");
 
-        UserBean user = userService.getUserBySession(httpSession.getId());
-        if(user == null){
-            return new MessageBean(false, "You need to be connected");
-        }
-
-        if(title.trim().equals("") || description.trim().equals("")){
-            return new MessageBean(false, "Title and description are needed.");
-        }
-
-        String filePath = "";
         // Upload Image
         try{
-            filePath = this.fileService.uploadImage(path, file);
+            String filePath = this.fileService.uploadImage(file, "image");
+            return filePath;
+
         }
         catch(Exception e){
+            System.out.println("error");
             e.printStackTrace();
-            return new MessageBean(false, e.getMessage());
+            return null;
         }
 
-        // Save image in DB
-        ImageBean image = new ImageBean();
-        image.setImagePath(filePath);
-        image.setDescription(description);
-        image.setTitle(title);
-        image.setUser(userService.getUserBySession(httpSession.getId()));
-        imageService.saveImage(image);
+
+    }
+
+    @PostMapping("/save")
+    public MessageBean save(HttpSession httpSession, @RequestParam("image")ImageBean image)
+    {
+        System.out.println("/save");
+        System.out.println(image);
+
+//
+//        UserBean user = userService.getUserBySession(httpSession.getId());
+//        if(user == null){
+//            return new MessageBean(false, "You need to be connected");
+//        }
+//
+//        if(title.trim().equals("") || description.trim().equals("")){
+//            return new MessageBean(false, "Title and description are needed.");
+//        }
+//
+//        String filePath = "";
+//        // Upload Image
+//        try{
+//            filePath = this.fileService.uploadImage(file, "image");
+//        }
+//        catch(Exception e){
+//            e.printStackTrace();
+//            return new MessageBean(false, e.getMessage());
+//        }
+//
+//        // Save image in DB
+//        ImageBean image = new ImageBean();
+//        image.setImagePath(filePath);
+//        image.setDescription(description);
+//        image.setTitle(title);
+//        image.setUser(userService.getUserBySession(httpSession.getId()));
+//        imageService.saveImage(image);
 
 
         return new MessageBean(true, "Your file has been upload.");
 
     }
+
 
 }

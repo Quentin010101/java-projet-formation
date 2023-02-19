@@ -44,7 +44,7 @@ public class AuthRestController {
                 throw new Exception("Credentials are not correct");
             }
 
-            httpSession.setMaxInactiveInterval(120);
+            httpSession.setMaxInactiveInterval(60);
             user.setSessionId(httpSession.getId());
             userService.saveUser(user);
 
@@ -97,6 +97,7 @@ public class AuthRestController {
         }
     }
 
+    // Permet de se déconnecter
     @GetMapping("logout")
     public void logOut(HttpSession httpSession){
         System.out.println("logout");

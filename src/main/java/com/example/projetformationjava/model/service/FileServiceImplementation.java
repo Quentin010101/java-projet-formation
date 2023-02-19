@@ -13,7 +13,10 @@ import java.util.UUID;
 @Service
 public class FileServiceImplementation implements FileService{
     @Override
-    public String uploadImage(String path, MultipartFile file) throws IOException {
+    public String uploadImage(MultipartFile file, String directory) throws IOException {
+
+        // Path Storage
+        String path = "src/main/resources/static/" + directory + "/";
 
         // File name
         String name = file.getOriginalFilename();
@@ -34,13 +37,8 @@ public class FileServiceImplementation implements FileService{
 
         // Fullpath
         String filePath = path + uuid + "." + extension;
-        String filePathReturn = "/" + filePath;
-        // Create folder if not exists
-        File f = new File(path);
-        if(!f.exists()){
-            f.mkdir();
-        }
-    System.out.println(Paths.get(filePath));
+        String filePathReturn = "/" + directory + "/" + uuid + "." + extension;
+
         // File copy
         try{
             Files.copy(file.getInputStream(), Paths.get(filePath));

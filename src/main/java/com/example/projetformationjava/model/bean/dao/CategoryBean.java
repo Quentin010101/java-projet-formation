@@ -37,6 +37,10 @@ public class CategoryBean {
         return type;
     }
 
+    public long getCategoryid() {
+        return categoryid;
+    }
+
     public void setType(String type) {
         this.type = type;
     }

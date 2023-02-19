@@ -8,6 +8,6 @@ import java.io.IOException;
 @Service
 public interface FileService {
 
-    String uploadImage(String path, MultipartFile file) throws IOException;
+    String uploadImage(MultipartFile file, String directory) throws IOException;
 
 }
