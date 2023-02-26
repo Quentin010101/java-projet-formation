@@ -1,9 +1,13 @@
 package com.example.projetformationjava.model.bean.dao;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name="pivot_image_user")
+@Getter
+@Setter
 public class PivotImageUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,27 +19,5 @@ public class PivotImageUser {
 
     public PivotImageUser(){
 
-    }
-    public long getId() {
-        return id;
-    }
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getImageid() {
-        return imageid;
-    }
-
-    public void setImageid(long imageid) {
-        this.imageid = imageid;
-    }
-
-    public long getUserid() {
-        return userid;
-    }
-
-    public void setUserid(long userid) {
-        this.userid = userid;
     }
 }

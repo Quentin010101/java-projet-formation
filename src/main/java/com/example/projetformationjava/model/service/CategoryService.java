@@ -26,4 +26,8 @@ public class CategoryService {
     public List<CategoryBean> getAllCategory(){
         return categoryRep.findAll();
     }
+
+    public long getCountCategory(){
+        return categoryRep.count();
+    }
 }

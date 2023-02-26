@@ -1,4 +1,4 @@
-package com.example.projetformationjava.model.bean.dao;
+package com.example.projetformationjava.model.bean.dto;
 
 public class AuthBean {
     private String password;

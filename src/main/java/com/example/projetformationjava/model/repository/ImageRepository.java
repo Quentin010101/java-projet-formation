@@ -17,4 +17,7 @@ public interface ImageRepository extends JpaRepository<ImageBean, Long> {
 
     // Permet de recuperer les images d'un utilisateur
     List<ImageBean> getImageBeansByUser(UserBean user);
+
+    ImageBean getImageBeanByImagePath(String str);
+
 }

@@ -37,4 +37,7 @@ public class UserService {
         return userRepository.existsByPseudo(pseudo);
     }
 
+    public long getCountUser(){
+        return userRepository.count();
+    }
 }

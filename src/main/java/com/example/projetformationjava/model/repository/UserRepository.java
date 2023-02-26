@@ -12,4 +12,5 @@ public interface UserRepository extends JpaRepository<UserBean, Long> {
 
     boolean existsByPseudo(String pseudo);
 
+
 }

@@ -2,12 +2,11 @@ package com.example.projetformationjava.controller;
 
 import com.example.projetformationjava.model.bean.dao.CategoryBean;
 import com.example.projetformationjava.model.bean.dao.ImageBean;
+import com.example.projetformationjava.model.bean.dao.PivotCategoryImage;
 import com.example.projetformationjava.model.bean.dao.UserBean;
-import com.example.projetformationjava.model.bean.dto.MessageBean;
-import com.example.projetformationjava.model.service.CategoryService;
-import com.example.projetformationjava.model.service.FileServiceImplementation;
-import com.example.projetformationjava.model.service.ImageService;
-import com.example.projetformationjava.model.service.UserService;
+import com.example.projetformationjava.model.bean.dto.HomePageCount;
+import com.example.projetformationjava.model.bean.dto.ReturnMessageBean;
+import com.example.projetformationjava.model.service.*;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 
@@ -35,6 +33,9 @@ public class ImageRestController {
     private UserService userService;
     @Autowired
     private FileServiceImplementation fileService;
+
+    @Autowired
+    private PivotCategoryImageService pivotCategoryImageService;
 
 
     // Permet de recuperer les 9 meilleurs images de la semaine
@@ -87,63 +88,72 @@ public class ImageRestController {
     }
 
     // Permet de sauvegarder  une image
-    @PostMapping("/savefile")
-    public String save(HttpSession httpSession, @RequestParam("file")MultipartFile file)
+    @PostMapping("/save")
+    public ReturnMessageBean save(HttpSession httpSession,
+                            @RequestParam MultipartFile file,
+                            @RequestParam String title,
+                            @RequestParam String description,
+                            @RequestParam List<Integer> categories)
     {
-        System.out.println("/savefile");
 
-        // Upload Image
+        System.out.println("/save");
+
+
+        UserBean user = userService.getUserBySession(httpSession.getId());
+        if(user == null){
+            return new ReturnMessageBean(false, "You need to be connected.");
+        }
+        if(title.equals("") || description.equals("")){
+            return new ReturnMessageBean(false, "Title and description required.");
+        }
+        if(file.isEmpty()){
+            return new ReturnMessageBean(false, "Image is required.");
+        }
+
+
         try{
+            // Upload Image
             String filePath = this.fileService.uploadImage(file, "image");
-            return filePath;
+
+            // Save image in DB
+            ImageBean image = new ImageBean();
+
+            image.setImagePath(filePath);
+            image.setDescription(description);
+            image.setTitle(title);
+            image.setUser(userService.getUserBySession(httpSession.getId()));
+
+            ImageBean imageDb = imageService.saveImage(image);
+
+            for(int element: categories){
+                PivotCategoryImage p = new PivotCategoryImage();
+                p.setCategoryid(element);
+                p.setImageid(imageDb.getImageid());
+                pivotCategoryImageService.addCategoryToImage(p);
+            }
+
+            return new ReturnMessageBean(true, "Your image has been uploaded.");
 
         }
         catch(Exception e){
-            System.out.println("error");
             e.printStackTrace();
-            return null;
+            return new ReturnMessageBean(false, e.getMessage());
         }
+
+
 
 
     }
 
-    @PostMapping("/save")
-    public MessageBean save(HttpSession httpSession, @RequestParam("image")ImageBean image)
-    {
-        System.out.println("/save");
-        System.out.println(image);
+    // Permet de recuper le nb de user, category et image
+    @GetMapping("/homepagecount")
+    public HomePageCount getCount(){
+        System.out.println("homepagecount");
+        long nbimage = imageService.getCountImage();
+        long nbCategories = categoryService.getCountCategory();
+        long nbUsers = userService.getCountUser();
 
-//
-//        UserBean user = userService.getUserBySession(httpSession.getId());
-//        if(user == null){
-//            return new MessageBean(false, "You need to be connected");
-//        }
-//
-//        if(title.trim().equals("") || description.trim().equals("")){
-//            return new MessageBean(false, "Title and description are needed.");
-//        }
-//
-//        String filePath = "";
-//        // Upload Image
-//        try{
-//            filePath = this.fileService.uploadImage(file, "image");
-//        }
-//        catch(Exception e){
-//            e.printStackTrace();
-//            return new MessageBean(false, e.getMessage());
-//        }
-//
-//        // Save image in DB
-//        ImageBean image = new ImageBean();
-//        image.setImagePath(filePath);
-//        image.setDescription(description);
-//        image.setTitle(title);
-//        image.setUser(userService.getUserBySession(httpSession.getId()));
-//        imageService.saveImage(image);
-
-
-        return new MessageBean(true, "Your file has been upload.");
-
+        return new HomePageCount(nbimage, nbCategories, nbUsers);
     }
 
 

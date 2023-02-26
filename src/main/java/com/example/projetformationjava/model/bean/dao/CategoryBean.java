@@ -1,12 +1,16 @@
 package com.example.projetformationjava.model.bean.dao;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name="category")
+@Getter
+@Setter
 public class CategoryBean {
 
     @Id
@@ -20,28 +24,4 @@ public class CategoryBean {
             inverseJoinColumns = @JoinColumn(name="imageid") )
     private List<ImageBean> listeImage = new ArrayList<>();
 
-    public List<ImageBean> getListeImage() {
-        return listeImage;
-    }
-
-    public void setListeImage(List<ImageBean> listeImage) {
-        this.listeImage = listeImage;
-    }
-
-
-    public void setCategoryid(int categoryid) {
-        this.categoryid = categoryid;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public long getCategoryid() {
-        return categoryid;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }

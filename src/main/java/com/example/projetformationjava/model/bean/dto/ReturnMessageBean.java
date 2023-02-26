@@ -1,6 +1,6 @@
 package com.example.projetformationjava.model.bean.dto;
 
-public class MessageBean {
+public class ReturnMessageBean {
     private boolean bool;
     private String message;
 
@@ -13,17 +13,17 @@ public class MessageBean {
     public void setToken(String token) {
         this.token = token;
     }
-    public MessageBean(boolean bool, String message, String token) {
+    public ReturnMessageBean(boolean bool, String message, String token) {
         this.bool = bool;
         this.message = message;
         this.token = token;
     }
-    public MessageBean(boolean bool, String message) {
+    public ReturnMessageBean(boolean bool, String message) {
         this.bool = bool;
         this.message = message;
     }
 
-    public MessageBean() {
+    public ReturnMessageBean() {
     }
 
     public boolean isBool() {

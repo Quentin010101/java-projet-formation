@@ -25,8 +25,14 @@ public class ImageService {
     }
 
     // Save image
-    public void saveImage(ImageBean image){
+    public ImageBean saveImage(ImageBean image){
         imageRepository.save(image);
+        ImageBean imageDb = imageRepository.getImageBeanByImagePath(image.getImagePath());
+        return imageDb;
+    }
+
+    public long getCountImage(){
+        return imageRepository.count();
     }
 
 }

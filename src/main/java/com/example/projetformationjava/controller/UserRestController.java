@@ -1,9 +1,8 @@
 package com.example.projetformationjava.controller;
 
 import com.example.projetformationjava.model.bean.dao.UserBean;
-import com.example.projetformationjava.model.bean.dto.MessageBean;
+import com.example.projetformationjava.model.bean.dto.ReturnMessageBean;
 import com.example.projetformationjava.model.bean.dto.UserDto;
-import com.example.projetformationjava.model.bean.mapper.UserMapper;
 import com.example.projetformationjava.model.bean.mapper.UserMapperImpl;
 import com.example.projetformationjava.model.service.FileServiceImplementation;
 import com.example.projetformationjava.model.service.UserService;
@@ -34,7 +33,7 @@ public class UserRestController {
 
     // Permet de mettre à jour les infos utilisateurs
     @PostMapping("update/user")
-    public MessageBean updateUser(HttpSession httpSession, @RequestBody UserDto userDto){
+    public ReturnMessageBean updateUser(HttpSession httpSession, @RequestBody UserDto userDto){
         System.out.println("update user");
 
         try{
@@ -42,10 +41,10 @@ public class UserRestController {
             UserMapperImpl mapper = new UserMapperImpl();
             userService.saveUser(mapper.updateUserFromDto(userDto, user));
 
-            return new MessageBean(true, "Information updated.");
+            return new ReturnMessageBean(true, "Information updated.");
         }catch(Exception e){
 
-            return new MessageBean(false, e.getMessage());
+            return new ReturnMessageBean(false, e.getMessage());
 
         }
 
@@ -54,7 +53,7 @@ public class UserRestController {
 
     // Permet de mettre à jour l'avatar
     @PostMapping("update/avatar")
-    public MessageBean updateAvatar(HttpSession httpSession, @RequestParam("file") MultipartFile file){
+    public ReturnMessageBean updateAvatar(HttpSession httpSession, @RequestParam("file") MultipartFile file){
         System.out.println("update-avatar");
 
 
@@ -69,11 +68,11 @@ public class UserRestController {
             user.setAvatarPath(path);
             userService.saveUser(user);
 
-            return new MessageBean(true, "Avatar has been uploaded");
+            return new ReturnMessageBean(true, "Avatar has been uploaded");
 
         }catch(Exception e){
             e.printStackTrace();
-            return new MessageBean(false, e.getMessage());
+            return new ReturnMessageBean(false, e.getMessage());
         }
 
     }

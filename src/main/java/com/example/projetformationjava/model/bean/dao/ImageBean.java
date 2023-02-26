@@ -1,11 +1,15 @@
 package com.example.projetformationjava.model.bean.dao;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name="image")
+@Getter
+@Setter
 public class ImageBean {
 
     @Id
@@ -15,62 +19,23 @@ public class ImageBean {
     private String title;
     private String description;
 
+    
     @ManyToOne(fetch = FetchType.EAGER) // Eager valeur par default
     @JoinColumn(name="userid", referencedColumnName = "userid")
     private UserBean user;
 
-//    @OneToMany(fetch = FetchType.EAGER) // Eager valeur par default
-//    @JoinColumn(name="imageid", referencedColumnName = "imageid")
     @OneToMany(mappedBy = "imageid",fetch = FetchType.EAGER)
     private List<PivotImageUser> like;
 
-
-    public UserBean getUser() {
-        return user;
+    @Override
+    public String toString() {
+        return "ImageBean{" +
+                "imageid=" + imageid +
+                ", imagePath='" + imagePath + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", user=" + user +
+                ", like=" + like +
+                '}';
     }
-
-    public void setUser(UserBean user) {
-        this.user = user;
-    }
-
-    public int getLike(){
-        return like.size();
-    }
-
-    public ImageBean() {
-    }
-
-    public ImageBean(String imagePath, String title, String description) {
-        this.imagePath = imagePath;
-        this.title = title;
-        this.description = description;
-    }
-    public void setImageid(int imageid) {
-        this.imageid = imageid;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
 }
